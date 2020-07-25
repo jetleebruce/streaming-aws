@@ -17,9 +17,36 @@ const streamUrl =
 function Router() {
   return (
     <HashRouter>
-      <nav>
-        <Link to='/'>Stream</Link>
-        <Link to='/auth'>Profile</Link>
+      <nav
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          paddingTop: "2rem",
+          paddingBottom: "2rem",
+        }}
+      >
+        <Link
+          to='/'
+          style={{
+            border: "1px solid black",
+            textDecoration: "none",
+            borderRadius: "8px ",
+            padding: "0.5rem",
+          }}
+        >
+          Stream
+        </Link>
+        <Link
+          style={{
+            border: "1px solid black",
+            textDecoration: "none",
+            borderRadius: "8px ",
+            padding: "0.5rem",
+          }}
+          to='/auth'
+        >
+          Profile
+        </Link>
       </nav>
       <Switch>
         <Route exact path='/'>
@@ -68,13 +95,15 @@ function App() {
     }).subscribe({
       next: async (commentData) => {
         console.log(commentData);
-        const {value:{data}}=commentData
+        const {
+          value: { data },
+        } = commentData;
         try {
-          const user = await Auth.currentAuthenticatedUser()
+          const user = await Auth.currentAuthenticatedUser();
           if (user.username === data.onCreateComment.owner) {
-            return
+            return;
           }
-          dispatch({type: "ADD_COMMENT", comment: data.onCreateComment})
+          dispatch({ type: "ADD_COMMENT", comment: data.onCreateComment });
         } catch (err) {
           dispatch({ type: "ADD_COMMENT", comment: data.onCreateComment });
         }
